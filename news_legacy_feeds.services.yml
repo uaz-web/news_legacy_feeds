@@ -1,0 +1,5 @@
+services:
+  news_legacy_feeds.response_wrapper_subscriber:
+    class: Drupal\news_legacy_feeds\EventSubscriber\ResponseWrapperSubscriber
+    tags:
+      - { name: event_subscriber }

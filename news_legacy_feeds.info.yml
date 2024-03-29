@@ -1,0 +1,9 @@
+name: 'Legacy News Feeds'
+type: module
+description: 'A new module for an old feed.'
+core_version_requirement: ^10
+package: 'News'
+dependencies:
+ - drupal:rest
+ - drupal:serialization
+ - az_news_export:az_news_export

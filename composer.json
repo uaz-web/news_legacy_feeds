@@ -1,0 +1,8 @@
+{
+  "name": "uaz-web/news_legacy_feeds",
+  "description": "Custom module for News Legacy Feeds",
+  "type": "drupal-custom-module",
+  "require": {
+      "drupal/core": "^10"
+  }
+}

@@ -1,0 +1,66 @@
+name: news-legacy-feeds
+recipe: drupal10
+config:
+  php: '8.1'
+  via: apache:2.4
+  webroot: web
+  database: mariadb:10.4
+  xdebug: false
+services:
+  # Replaces default lando MariaDB image with arm64 (Apple M1) compatible one.
+  # TODO: remove database service overrides once lando is updated.
+  database:
+    type: compose
+    services:
+      image: mariadb:10.4
+      command: docker-entrypoint.sh mariadbd
+      restart: always
+      ports:
+        - '3306'
+      environment:
+        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 'true'
+        MARIADB_DATABASE: drupal10
+        MYSQL_DATABASE: drupal10
+        MARIADB_USER: drupal10
+        MARIADB_PASSWORD: drupal10
+  appserver:
+    overrides:
+      volumes:
+        # Don't share our host working directory as /app. We want /app empty for composer.
+        - /app
+        # Instead share our host working directory as a standalone package.
+        - .:/usr/local/news-legacy-feeds
+    build:
+      # Create a new quickstart project and use the news_legacy_feeds module as a non-packagist repository.
+      - git clone https://github.com/az-digital/az-quickstart-scaffolding.git /app
+      - composer config repositories.localdev path /usr/local/news-legacy-feeds && composer require --no-update uaz-web/news_legacy_feeds:\*@dev
+      - composer install
+tooling:
+  # Provide a command to install Drupal.
+  install:
+    service: appserver
+    cmd:
+      - /app/vendor/bin/drush --root=/app/web site:install
+        --account-mail=noreply@email.arizona.edu --account-name=azadmin
+        --account-pass=azadmin2024
+        --db-url=mysql://drupal10:drupal10@database:3306/drupal10 -y --verbose
+      - /app/vendor/bin/drush --root=/app/web pm:install -y news_legacy_feeds az_demo
+      - /app/vendor/bin/drush --root=/app/web config:set -y az_cas.settings disable_login_form 0
+      - /app/vendor/bin/drush --root=/app/web cache:rebuild
+      - /app/vendor/bin/drush --root=/app/web user:login -l https://news-legacy-feeds.lndo.site
+
+  # Provide Drush tooling to automatically know the Drupal root.
+  drush:
+    service: appserver
+    cmd: /app/vendor/bin/drush --root=/app/web
+  # Provide phpcs tooling to check coding standards.
+  phpcs:
+    service: appserver
+    cmd: /app/vendor/bin/phpcs --colors --standard=web/profiles/custom/az_quickstart/phpcs.xml.dist web/modules/custom/news_legacy_feeds
+  # Provide PHPCBF tooling to fix coding standards.
+  phpcbf:
+    service: appserver
+    cmd: /app/vendor/bin/phpcbf --colors --standard=web/profiles/custom/az_quickstart/phpcs.xml.dist web/modules/custom/news_legacy_feeds
+  phpstan:
+    service: appserver
+    cmd: /app/vendor/bin/phpstan analyse --configuration web/profiles/custom/az_quickstart/phpstan.neon web/modules/custom/news_legacy_feeds
