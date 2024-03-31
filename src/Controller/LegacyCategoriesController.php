@@ -81,7 +81,7 @@ class LegacyCategoriesController extends ControllerBase {
     ];
 
     if ($vocabulariesParam === 'all') {
-      $vocabularies = $supportedVocabularies;
+      $vocabularies = array_keys($supportedVocabularies);
     }
     else {
       $vocabularies = explode('+', $vocabulariesParam);
