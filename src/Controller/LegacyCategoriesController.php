@@ -85,7 +85,7 @@ class LegacyCategoriesController extends ControllerBase {
     }
     else {
       $vocabularies = explode('+', $vocabulariesParam);
-      if (array_diff($vocabularies, array_keys($supportedVocabularies))) {
+      if (!empty(array_diff($vocabularies, array_keys($supportedVocabularies)))) {
         return new JsonResponse(['error' => 'Unsupported vocabulary requested'], 400);
       }
     }
