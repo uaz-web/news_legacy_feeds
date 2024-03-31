@@ -79,7 +79,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
     }
 
     $new_tid = isset($new_tid_mappings[$tid]) ? $new_tid_mappings[$tid] : $tid;
-    $new_url = Url::fromUri('internal:/feed/json/stories-updated/' . $new_tid);
+    $new_url = Url::fromUri('internal:/feed/json/stories-updated/' . $new_tid)->toString();
     return new RedirectResponse($new_url);
   }
 
