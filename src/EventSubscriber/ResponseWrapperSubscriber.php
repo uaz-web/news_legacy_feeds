@@ -22,17 +22,6 @@ public function onResponse(ResponseEvent $event) {
   $route_name = $route['_route'];
   // Checking if the route belongs to a view and if the view is the one we're
   // interested in.
-  if ($route_name === 'view.news_deprecated_feeds_terms.categories') {
-  // if ($request->attributes->get('_view_id') === 'news_deprecated_feeds_terms') {
-    $response = $event->getResponse();
-
-    if ($response->headers->get('Content-Type') === 'application/json') {
-      $data = json_decode($response->getContent(), true);
-      $wrappedData = ['terms' => $data];
-      $response->setContent(json_encode($wrappedData));
-      $event->setResponse($response);
-    }
-  }
   if ($route_name === 'view.news_deprecated_feeds_stories.category') {
   // if ($request->attributes->get('_view_id') === 'news_deprecated_feeds_terms') {
     $response = $event->getResponse();
