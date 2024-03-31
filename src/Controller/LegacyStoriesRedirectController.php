@@ -72,7 +72,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
     }
     else {
       $module_path = $this->moduleHandler->getModule('news_legacy_feeds')->getPath();
-      $mapping_file_path = "$module_path/new_tid_mappings.json";
+      $mapping_file_path = "$module_path/mapping_data/new_tid_mappings.json";
 
       $new_tid_mappings = json_decode(file_get_contents($mapping_file_path), TRUE);
       $this->cache->set('news_legacy_feeds.new_tid_mappings', $new_tid_mappings);
