@@ -79,7 +79,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
     }
 
     $new_tid = isset($new_tid_mappings[$tid]) ? $new_tid_mappings[$tid] : $tid;
-    $new_url = Url::fromRoute('view.news_deprecated_feeds_stories.category', ['term_node_tid_depth' => $new_tid])->toString();
+    $new_url = Url::fromUri('/feed/json/stories-updated/' . $new_tid);
     return new RedirectResponse($new_url);
   }
 
