@@ -1,5 +1,5 @@
 news_legacy_feeds.legacy_categories:
-  path: '/feed/json/categories/{vocabularies}'
+  path: '/feed/json/categories/{vocabulariesParam}'
   defaults:
     _controller: '\Drupal\news_legacy_feeds\Controller\LegacyCategoriesController::getTaxonomyTerms'
   requirements:
