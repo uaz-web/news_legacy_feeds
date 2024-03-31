@@ -33,7 +33,7 @@ services:
     build:
       # Create a new quickstart project and use the news_legacy_feeds module as a non-packagist repository.
       - git clone https://github.com/az-digital/az-quickstart-scaffolding.git /app
-      - composer config repositories.localdev path /usr/local/news-legacy-feeds && composer require --no-update uaz-web/news_legacy_feeds:\*@dev
+      - composer config repositories.localdev path /usr/local/news-legacy-feeds && composer require --no-update az-marketing/news_legacy_feeds:\*@dev
       - composer install
 tooling:
   # Provide a command to install Drupal.
