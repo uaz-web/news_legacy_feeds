@@ -426,7 +426,7 @@ display:
         metatag_display_extender:
           metatags: {  }
           tokenize: false
-      path: feed/json/stories/%
+      path: feed/json/stories-updated/%
     cache_metadata:
       max-age: -1
       contexts:
