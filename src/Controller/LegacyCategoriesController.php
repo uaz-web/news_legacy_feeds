@@ -103,13 +103,13 @@ class LegacyCategoriesController extends ControllerBase {
       $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($vocabulary, 0, NULL, TRUE);
 
       foreach ($terms as $term) {
-        $tid = $term->id();
+        $tid = $new_tid = $term->id();
         // Replace TID if it's in the old mappings.
         if (isset($oldTidMappings[$tid])) {
           $tid = $oldTidMappings[$tid];
         }
 
-        $url = Url::fromRoute('entity.taxonomy_term.canonical', ['taxonomy_term' => $tid]);
+        $url = Url::fromRoute('entity.taxonomy_term.canonical', ['taxonomy_term' => $new_tid]);
         $data[] = [
           'term' => [
             'name' => $term->getName(),
