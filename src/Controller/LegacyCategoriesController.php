@@ -76,7 +76,7 @@ class LegacyCategoriesController extends ControllerBase {
   public function getTaxonomyTerms($vocabulariesParam) {
     $supportedVocabularies = [
       'uanews_tags' => 'az_news_tags',
-      'uanews_categories' => 'az_news_categories',
+      'uanews_categories' => 'news_story_categories',
       'event_categories' => 'az_event_categories',
     ];
 
