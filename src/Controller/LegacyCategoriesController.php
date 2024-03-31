@@ -74,14 +74,18 @@ class LegacyCategoriesController extends ControllerBase {
    *   A JSON response containing the terms.
    */
   public function getTaxonomyTerms($vocabulariesParam) {
-    $supportedVocabularies = ['az_news_tags', 'az_event_categories'];
+    $supportedVocabularies = [
+      'uanews_tags' => 'az_news_tags',
+      'uanews_categories' => 'az_news_categories',
+      'event_categories' => 'az_event_categories',
+    ];
 
     if ($vocabulariesParam === 'all') {
       $vocabularies = $supportedVocabularies;
     }
     else {
       $vocabularies = explode('+', $vocabulariesParam);
-      if (array_diff($vocabularies, $supportedVocabularies)) {
+      if (array_diff($vocabularies, array_keys($supportedVocabularies))) {
         return new JsonResponse(['error' => 'Unsupported vocabulary requested'], 400);
       }
     }
@@ -100,7 +104,7 @@ class LegacyCategoriesController extends ControllerBase {
 
     $data = [];
     foreach ($vocabularies as $vocabulary) {
-      $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($vocabulary, 0, NULL, TRUE);
+      $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree($supportedVocabularies[$vocabulary], 0, NULL, TRUE);
 
       foreach ($terms as $term) {
         $tid = $new_tid = $term->id();
