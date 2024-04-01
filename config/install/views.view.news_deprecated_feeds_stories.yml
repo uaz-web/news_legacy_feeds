@@ -293,14 +293,14 @@ display:
             format: default_summary
           specify_validation: true
           validate:
-            type: taxonomy_term_name
+            type: 'entity:taxonomy_term'
             fail: empty
           validate_options:
             bundles:
               az_news_tags: az_news_tags
             access: false
             operation: view
-            transform: true
+            multiple: 0
           break_phrase: true
           depth: 0
           use_taxonomy_term_path: false
