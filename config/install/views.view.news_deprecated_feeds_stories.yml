@@ -300,7 +300,7 @@ display:
               az_news_tags: az_news_tags
             access: false
             operation: view
-            multiple: 0
+            multiple: 1
           break_phrase: true
           depth: 0
           use_taxonomy_term_path: false
