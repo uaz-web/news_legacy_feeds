@@ -8,21 +8,20 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class LegacyStoriesRedirectController.
  *
- * Handles redirection for legacy stories feed based on term ID mappings.
+ * Handles redirection for legacy stories.
  */
 class LegacyStoriesRedirectController extends ControllerBase {
 
   /**
-   * The cache service.
+   * The cache backend service.
    *
    * @var \Drupal\Core\Cache\CacheBackendInterface
    */
-  protected $cache;
+  protected $cacheBackend;
 
   /**
    * The module handler service.
@@ -32,15 +31,15 @@ class LegacyStoriesRedirectController extends ControllerBase {
   protected $moduleHandler;
 
   /**
-   * LegacyStoriesRedirectController constructor.
+   * Constructs a LegacyStoriesRedirectController object.
    *
-   * @param \Drupal\Core\Cache\CacheBackendInterface $cache
-   *   The cache service.
+   * @param \Drupal\Core\Cache\CacheBackendInterface $cache_backend
+   *   The cache backend service.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler service.
    */
-  public function __construct(CacheBackendInterface $cache, ModuleHandlerInterface $module_handler) {
-    $this->cache = $cache;
+  public function __construct(CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler) {
+    $this->cacheBackend = $cache_backend;
     $this->moduleHandler = $module_handler;
   }
 
@@ -55,32 +54,38 @@ class LegacyStoriesRedirectController extends ControllerBase {
   }
 
   /**
-   * Redirects the request based on term ID mappings.
+   * Redirects to the new story page based on the old term IDs.
    *
-   * @param \Symfony\Component\HttpFoundation\Request $request
-   *   The current request.
-   *
+   * @param string $termIdsParam
+   *   The old term IDs separated by " " ("+" in the raw request).
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
-   *   The redirect response.
+   *   A redirect response object.
    */
-  public function redirectTid(Request $request) {
-    $tid = $request->attributes->get('tid');
+  public function redirectStory($termIdsParam) {
+    // Plus characters in request parameters turn into spaces for some reason.
+    $termIds = explode(' ', $termIdsParam);
 
-    $cache = $this->cache->get('news_legacy_feeds.new_tid_mappings');
+    // Load new TID mappings from cache or JSON file.
+    $cache = $this->cacheBackend->get('news_legacy_feeds.new_tid_mappings');
     if ($cache) {
-      $new_tid_mappings = $cache->data;
+      $newTidMappings = $cache->data;
     }
     else {
-      $module_path = $this->moduleHandler->getModule('news_legacy_feeds')->getPath();
-      $mapping_file_path = "$module_path/mapping_data/new_tid_mappings.json";
-
-      $new_tid_mappings = json_decode(file_get_contents($mapping_file_path), TRUE);
-      $this->cache->set('news_legacy_feeds.new_tid_mappings', $new_tid_mappings);
+      $modulePath = $this->moduleHandler->getModule('news_legacy_feeds')->getPath();
+      $json = file_get_contents($modulePath . '/mapping_data/new_tid_mappings.json');
+      $newTidMappings = json_decode($json, TRUE);
+      $this->cacheBackend->set('news_legacy_feeds.new_tid_mappings', $newTidMappings);
     }
 
-    $new_tid = isset($new_tid_mappings[$tid]) ? $new_tid_mappings[$tid] : $tid;
-    $new_url = Url::fromUri('internal:/feed/json/stories-updated/' . $new_tid)->toString();
-    return new RedirectResponse($new_url);
+    $newTermIds = [];
+    foreach ($termIds as $termId) {
+      // Replace TID if it's in the new mappings, otherwise preserve it as-is.
+      $newTermIds[] = isset($newTidMappings[$termId]) ? $newTidMappings[$termId] : $termId;
+    }
+
+    // Redirect to the new story page.
+    $redirectUrl = Url::fromUri('internal:/feed/json/stories-updated/' . implode('+', $newTermIds));
+    return new RedirectResponse($redirectUrl->toString());
   }
 
 }
