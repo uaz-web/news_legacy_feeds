@@ -84,6 +84,7 @@ class LegacyCategoriesController extends ControllerBase {
       $vocabularies = array_keys($supportedVocabularies);
     }
     else {
+      // Plus characters in request parameters turn into spaces for some reason.
       $vocabularies = explode(' ', $vocabulariesParam);
       if (!empty(array_diff($vocabularies, array_keys($supportedVocabularies)))) {
         return new JsonResponse(['error' => 'Unsupported vocabulary requested'], 400);
