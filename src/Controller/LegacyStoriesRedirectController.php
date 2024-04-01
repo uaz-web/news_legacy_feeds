@@ -84,7 +84,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
     }
 
     // Redirect to the new stories feed view with updated TIDs.
-    $redirectUrl = Url::fromUri('internal:/feed/json/stories-updated/' . implode('+', $newTermIds));
+    $redirectUrl = Url::fromUri('internal:/feed/json/stories/id-updated/' . implode('+', $newTermIds));
     return new RedirectResponse($redirectUrl->toString());
   }
 
