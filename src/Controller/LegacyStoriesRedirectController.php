@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Class LegacyStoriesRedirectController.
  *
- * Handles redirection for legacy stories.
+ * Handles redirection for legacy stories feed based on term ID mappings
  */
 class LegacyStoriesRedirectController extends ControllerBase {
 
@@ -54,14 +54,14 @@ class LegacyStoriesRedirectController extends ControllerBase {
   }
 
   /**
-   * Redirects to the new story page based on the old term IDs.
+   * Redirects the request based on term ID mappings.
    *
    * @param string $termIdsParam
    *   The old term IDs separated by " " ("+" in the raw request).
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   A redirect response object.
    */
-  public function redirectStory($termIdsParam) {
+  public function redirectTids($termIdsParam) {
     // Plus characters in request parameters turn into spaces for some reason.
     $termIds = explode(' ', $termIdsParam);
 
@@ -83,7 +83,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
       $newTermIds[] = isset($newTidMappings[$termId]) ? $newTidMappings[$termId] : $termId;
     }
 
-    // Redirect to the new story page.
+    // Redirect to the new stories feed view with updated TIDs.
     $redirectUrl = Url::fromUri('internal:/feed/json/stories-updated/' . implode('+', $newTermIds));
     return new RedirectResponse($redirectUrl->toString());
   }
