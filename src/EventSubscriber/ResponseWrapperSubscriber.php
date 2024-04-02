@@ -22,7 +22,10 @@ public function onResponse(ResponseEvent $event) {
   $route_name = $route['_route'];
   // Checking if the route belongs to a view and if the view is the one we're
   // interested in.
-  if ($route_name === 'view.news_deprecated_feeds_stories.category' || 'view.news_deprecated_feeds_stories.category.website') {
+  if (
+    $route_name === 'view.news_deprecated_feeds_stories.category' ||
+    $route_name === 'view.news_deprecated_feeds_stories.category.website'
+  ) {
   // if ($request->attributes->get('_view_id') === 'news_deprecated_feeds_terms') {
     $response = $event->getResponse();
 
