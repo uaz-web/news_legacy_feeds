@@ -438,8 +438,8 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_az_photos'
-  rest_export_1:
-    id: rest_export_1
+  website:
+    id: website
     display_title: 'Website Feed JSON'
     display_plugin: rest_export
     position: 2
