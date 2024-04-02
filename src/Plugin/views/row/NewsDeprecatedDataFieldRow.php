@@ -151,7 +151,7 @@ protected function getNodeData($story) {
     ];
   }
 
-  $output['url-canonical'] = $story->toUrl()->toString();
+  $output['url-canonical'] = $story->toUrl()->setOption('absolute', TRUE)->toString();
   $output['date-of-publication'] = $this->formatDateOfPublication($story->get('field_az_published')[0]->value);
 
   // Convert terms to a comma-separated string
