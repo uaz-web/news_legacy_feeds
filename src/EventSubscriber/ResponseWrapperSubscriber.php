@@ -24,7 +24,7 @@ public function onResponse(ResponseEvent $event) {
   // interested in.
   if (
     $route_name === 'view.news_deprecated_feeds_stories.category' ||
-    $route_name === 'view.news_deprecated_feeds_stories.category.website'
+    $route_name === 'view.news_deprecated_feeds_stories.website'
   ) {
   // if ($request->attributes->get('_view_id') === 'news_deprecated_feeds_terms') {
     $response = $event->getResponse();
