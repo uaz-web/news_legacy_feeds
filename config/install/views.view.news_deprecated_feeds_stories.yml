@@ -444,6 +444,11 @@ display:
     display_plugin: rest_export
     position: 2
     display_options:
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 30
       arguments:
         term_node_tid_depth:
           id: term_node_tid_depth
@@ -483,7 +488,8 @@ display:
             type: 'entity:taxonomy_term'
             fail: empty
           validate_options:
-            bundles: {  }
+            bundles:
+              az_news_tags: az_news_tags
             access: false
             operation: view
             multiple: 1
@@ -496,10 +502,26 @@ display:
           field: term_node_tid_depth_modifier
           entity_type: node
           plugin_id: taxonomy_index_tid_depth_modifier
+      style:
+        type: serializer
+        options:
+          uses_fields: false
+          formats:
+            json: json
+      row:
+        type: news_deprecated_data_field_row
+        options:
+          field_options:
+            title:
+              alias: title
+              raw_output: 0
       defaults:
         arguments: false
       display_description: ''
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: feed/json/stories/id-updated/%
     cache_metadata:
       max-age: -1
