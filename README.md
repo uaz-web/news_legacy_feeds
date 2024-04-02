@@ -31,7 +31,7 @@ See
 Categories
 
 - All Categories Feed https://news-legacy-feeds.lndo.site/feed/json/categories/all
-- Filtered Categories Feed Example https://news-legacy-feeds.lndo.site/feed/json/categories/news_story_categories+az_news_tags
+- Filtered Categories Feed Example https://news-legacy-feeds.lndo.site/feed/json/categories/uanews_categories+uanews_tags
 
 To test, have the site import from itself.
 

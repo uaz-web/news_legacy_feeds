@@ -1,3 +1,4 @@
+uuid: ee5bd32a-48f8-437b-9c0a-9354645d473a
 langcode: en
 status: true
 dependencies:
@@ -6,6 +7,7 @@ dependencies:
     - node.type.az_news
     - taxonomy.vocabulary.az_news_tags
   module:
+    - datetime
     - news_legacy_feeds
     - node
     - rest
@@ -252,6 +254,20 @@ display:
           entity_field: created
           plugin_id: date
           order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
+        field_az_published_value:
+          id: field_az_published_value
+          table: node__field_az_published
+          field: field_az_published_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: datetime
+          order: ASC
           expose:
             label: ''
             field_identifier: ''
