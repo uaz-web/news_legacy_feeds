@@ -5,7 +5,11 @@ dependencies:
     - field.storage.node.field_az_photos
     - node.type.az_news
     - taxonomy.vocabulary.az_news_tags
+    - taxonomy.vocabulary.news_story_categories
+  content:
+    - 'taxonomy_term:az_news_tags:f308e16f-0e67-43e5-b17c-b19315e4f62a'
   module:
+    - datetime
     - news_legacy_feeds
     - node
     - rest
@@ -257,6 +261,20 @@ display:
             field_identifier: ''
           exposed: false
           granularity: second
+        field_az_published_value:
+          id: field_az_published_value
+          table: node__field_az_published
+          field: field_az_published_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: datetime
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments:
         term_node_tid_depth:
           id: term_node_tid_depth
@@ -364,6 +382,52 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+        tid:
+          id: tid
+          table: taxonomy_index
+          field: tid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            - 274
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: az_news_tags
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
       style:
         type: serializer
       row:
@@ -427,6 +491,104 @@ display:
           metatags: {  }
           tokenize: false
       path: feed/json/stories/%
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_az_photos'
+  website:
+    id: website
+    display_title: 'Website Feed JSON'
+    display_plugin: rest_export
+    position: 2
+    display_options:
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 30
+      arguments:
+        term_node_tid_depth:
+          id: term_node_tid_depth
+          table: node_field_data
+          field: term_node_tid_depth
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: node
+          plugin_id: taxonomy_index_tid_depth
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: taxonomy_tid
+          default_argument_options:
+            term_page: '1'
+            node: true
+            limit: true
+            vids:
+              az_news_tags: az_news_tags
+              news_story_categories: news_story_categories
+            anyall: +
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:taxonomy_term'
+            fail: empty
+          validate_options:
+            bundles:
+              az_news_tags: az_news_tags
+              news_story_categories: news_story_categories
+            access: false
+            operation: view
+            multiple: 1
+          break_phrase: true
+          depth: 0
+          use_taxonomy_term_path: false
+        term_node_tid_depth_modifier:
+          id: term_node_tid_depth_modifier
+          table: node_field_data
+          field: term_node_tid_depth_modifier
+          entity_type: node
+          plugin_id: taxonomy_index_tid_depth_modifier
+      style:
+        type: serializer
+        options:
+          uses_fields: false
+          formats:
+            json: json
+      row:
+        type: news_deprecated_data_field_row
+        options:
+          field_options:
+            title:
+              alias: title
+              raw_output: 0
+      defaults:
+        arguments: false
+      display_description: ''
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
+      path: feed/json/stories/id-updated/%
     cache_metadata:
       max-age: -1
       contexts:

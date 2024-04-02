@@ -168,11 +168,12 @@ protected function getNodeData($story) {
 }
 
 protected function formatDateOfPublication($dateString) {
-  // Assuming your desired date format is somewhat specific,
-  // you might need a custom formatting approach
-  $date = new \DateTime($dateString);
-  // Adjust the format as per your requirements
-  return $date->format('l midnight');
+  try {
+    $date = new \DateTime($dateString);
+    return $date->format('Y-m-d\TH:i:sP');
+  } catch (\Exception $e) {
+    return "Error formatting date: " . $e->getMessage();
+  }
 }
 protected function getTermsAsString($terms) {
   $termNames = [];
