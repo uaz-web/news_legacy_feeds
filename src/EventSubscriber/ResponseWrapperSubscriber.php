@@ -26,7 +26,6 @@ class ResponseWrapperSubscriber implements EventSubscriberInterface {
     $this->routeMatch = $route_match;
   }
 
-
   public static function getSubscribedEvents() {
     // Corrected: Removed the empty return statement.
     // The priority -10 ensures this runs after most default system operations.
