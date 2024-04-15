@@ -1,5 +1,6 @@
 services:
   news_legacy_feeds.response_wrapper_subscriber:
     class: Drupal\news_legacy_feeds\EventSubscriber\ResponseWrapperSubscriber
+    arguments: ['@current_route_match']
     tags:
       - { name: event_subscriber }
