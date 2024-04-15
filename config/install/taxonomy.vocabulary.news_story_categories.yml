@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'News Story Categories'
+vid: news_story_categories
+description: 'Taxonomy for AZ News Stories'
+weight: 0
