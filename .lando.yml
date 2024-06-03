@@ -34,6 +34,7 @@ services:
       # Create a new quickstart project and use the news_legacy_feeds module as a non-packagist repository.
       - git clone https://github.com/az-digital/az-quickstart-scaffolding.git /app
       - composer config repositories.localdev path /usr/local/news-legacy-feeds && composer require --no-update az-marketing/news_legacy_feeds:\*@dev
+      - composer require --no-update --dev drupal/config_import_single
       - composer install
 tooling:
   # Provide a command to install Drupal.
@@ -44,6 +45,10 @@ tooling:
         --account-mail=noreply@email.arizona.edu --account-name=azadmin
         --account-pass=azadmin2024
         --db-url=mysql://drupal10:drupal10@database:3306/drupal10 -y --verbose
+      - /app/vendor/bin/drush --root=/app/web pm:install -y config_import_single
+      - /app/vendor/bin/drush --root=/app/web cis /app/web/modules/custom/news_legacy_feeds/config/dependencies/taxonomy.vocabulary.news_story_categories.yml
+      - /app/vendor/bin/drush --root=/app/web cis /app/web/modules/custom/news_legacy_feeds/config/dependencies/field.storage.node.field_custom_news_article_type.yml
+      - /app/vendor/bin/drush --root=/app/web cis /app/web/modules/custom/news_legacy_feeds/config/dependencies/field.field.node.az_news.field_custom_news_article_type.yml
       - /app/vendor/bin/drush --root=/app/web pm:install -y news_legacy_feeds az_demo
       - /app/vendor/bin/drush --root=/app/web config:set -y az_cas.settings disable_login_form 0
       - /app/vendor/bin/drush --root=/app/web cache:rebuild
