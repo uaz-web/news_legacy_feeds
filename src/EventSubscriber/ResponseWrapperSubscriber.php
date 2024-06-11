@@ -7,6 +7,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * Subscribes to the response event to wrap JSON responses.
+ */
 class ResponseWrapperSubscriber implements EventSubscriberInterface {
 
   /**
@@ -26,14 +29,22 @@ class ResponseWrapperSubscriber implements EventSubscriberInterface {
     $this->routeMatch = $route_match;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getSubscribedEvents() {
-    // Corrected: Removed the empty return statement.
     // The priority -10 ensures this runs after most default system operations.
     return [
       KernelEvents::RESPONSE => ['onResponse', -10],
     ];
   }
 
+  /**
+   * Wraps the JSON response with additional data.
+   *
+   * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
+   *   The response event.
+   */
   public function onResponse(ResponseEvent $event) {
     $route_name = $this->routeMatch->getRouteName();
     // Checking if the route belongs to a view and if the view is the one we're
@@ -42,17 +53,15 @@ class ResponseWrapperSubscriber implements EventSubscriberInterface {
       $route_name === 'view.news_deprecated_feeds_stories.category' ||
       $route_name === 'view.news_deprecated_feeds_stories.website'
     ) {
-      // if ($request->attributes->get('_view_id') === 'news_deprecated_feeds_terms') {
       $response = $event->getResponse();
 
       if ($response->headers->get('Content-Type') === 'application/json') {
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), TRUE);
         $wrappedData = ['stories' => $data];
         $response->setContent(json_encode($wrappedData));
         $event->setResponse($response);
       }
     }
   }
-
 
 }

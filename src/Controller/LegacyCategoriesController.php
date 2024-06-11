@@ -70,6 +70,7 @@ class LegacyCategoriesController extends ControllerBase {
    *
    * @param string $vocabulariesParam
    *   The vocabularies to get terms for.
+   *
    * @return \Symfony\Component\HttpFoundation\JsonResponse
    *   A JSON response containing the terms.
    */
@@ -122,7 +123,7 @@ class LegacyCategoriesController extends ControllerBase {
             'tid' => $tid,
             'vocabulary' => $vocabulary,
             'path-canonical' => $url->toString(TRUE)->getGeneratedUrl(),
-          ]
+          ],
         ];
       }
     }
