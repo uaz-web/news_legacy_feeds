@@ -142,9 +142,14 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    */
   protected function getNodeData(Node $node) {
     $image_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? NULL;
-
-    $imgData = ($image_id !== NULL) ? $this->getImageData($image_id, $node) : new AZNewsDataEmpty();
-
+    if ($image_id !== NULL) {
+      // Cast $image_id to an integer.
+      $image_id = (int) $image_id;
+      $imgData = $this->getImageData($image_id, $node);
+    }
+    else {
+      $imgData = new AZNewsDataEmpty();
+    }
     $output = [
       'uuid' => $node->uuid(),
       'title' => $node->label(),
@@ -221,7 +226,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
   /**
    * Gets the image data.
    *
-   * @param int $value
+   * @param int $image_id
    *   The image ID.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
@@ -229,10 +234,10 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    * @return array|\Drupal\az_news_export\AZNewsDataEmpty
    *   The image data or an empty data object.
    */
-  protected function getImageData(int $value, $entity) {
+  protected function getImageData(int $image_id, $entity) {
     $item = [];
-    if (!empty($value)) {
-      $media = $this->entityTypeManager->getStorage('media')->load($value);
+    if (!empty($image_id)) {
+      $media = $this->entityTypeManager->getStorage('media')->load($image_id);
       if (!empty($media) && $media->access('view') && $media->hasField('field_media_az_image')) {
         if (!empty($media->field_media_az_image->entity)) {
           /** @var \Drupal\file\FileInterface $image */
