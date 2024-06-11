@@ -132,7 +132,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The node data.
    */
 protected function getNodeData($story) {
-  $image_id = $story->get('field_az_media_thumbnail_image')[0]->target_id;
+  // Default image id to a placeholder image
+  $image_id = $story->get('field_az_media_thumbnail_image')[0]->target_id ?? 20558;
   $imgData = $this->getImageData($image_id, $story);
   $output = [
     'uuid' => $story->uuid(),
