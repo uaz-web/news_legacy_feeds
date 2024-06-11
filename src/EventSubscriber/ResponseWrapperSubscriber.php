@@ -56,7 +56,7 @@ class ResponseWrapperSubscriber implements EventSubscriberInterface {
       $response = $event->getResponse();
 
       if ($response->headers->get('Content-Type') === 'application/json') {
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), TRUE);
         $wrappedData = ['stories' => $data];
         $response->setContent(json_encode($wrappedData));
         $event->setResponse($response);

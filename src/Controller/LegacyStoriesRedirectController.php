@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 /**
  * Class LegacyStoriesRedirectController.
  *
- * Handles redirection for legacy stories feed based on term ID mappings
+ * Handles redirection for legacy stories feed based on term ID mappings.
  */
 class LegacyStoriesRedirectController extends ControllerBase {
 
@@ -58,6 +58,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
    *
    * @param string $termIdsParam
    *   The old term IDs separated by " " ("+" in the raw request).
+   *
    * @return \Symfony\Component\HttpFoundation\RedirectResponse
    *   A redirect response object.
    */
@@ -80,7 +81,7 @@ class LegacyStoriesRedirectController extends ControllerBase {
     $newTermIds = [];
     foreach ($termIds as $termId) {
       // Replace TID if it's in the new mappings, otherwise preserve it as-is.
-      $newTermIds[] = isset($newTidMappings[$termId]) ? $newTidMappings[$termId] : $termId;
+      $newTermIds[] = $newTidMappings[$termId] ?? $termId;
     }
 
     // Redirect to the new stories feed view with updated TIDs.

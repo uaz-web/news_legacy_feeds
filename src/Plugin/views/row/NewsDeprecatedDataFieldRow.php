@@ -4,21 +4,21 @@ declare(strict_types = 1);
 
 namespace Drupal\news_legacy_feeds\Plugin\views\row;
 
-use Drupal\rest\Plugin\views\row\DataFieldRow;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\node\Entity\Node;
 use Drupal\az_news_export\AZNewsDataEmpty;
-use Drupal\image\Entity\ImageStyle;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\node\Entity\Node;
+use Drupal\rest\Plugin\views\row\DataFieldRow;
+use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Plugin which displays fields as raw data.
  *
- * This plugin is used to put each row of data into an array with a key of 'term' and
- * wrap that whole thing in a key of terms.
+ * This plugin is used to put each row of data into an array with a
+ * key of 'term' and wrap that whole thing in a key of terms.
  *
  * @ingroup views_row_plugins
  *
@@ -104,7 +104,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
 
     if ($entity instanceof Term) {
       return ['term' => $this->getTermData($entity)];
-    } elseif ($entity instanceof Node) {
+    }
+    elseif ($entity instanceof Node) {
       return ['story' => $this->getNodeData($entity)];
     }
 
@@ -159,20 +160,20 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
       ];
     }
     else {
-      // Default image id to a placeholder image
+      // Default image id to a placeholder image.
       $output['img-fid'] = 3974;
     }
 
     $output['url-canonical'] = $node->toUrl()->setOption('absolute', TRUE)->toString();
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
 
-    // Convert terms to a comma-separated string
+    // Convert terms to a comma-separated string.
     $terms = $node->get('field_az_news_tags')->referencedEntities();
     $output['terms'] = $this->getTermsAsString($terms);
 
     $output['summary-med'] = $node->get('field_az_summary')[0]->value ?? "\n";
     $output['byline'] = $node->get('field_az_byline')[0]->value ?? "\n";
-    // Adding byline-affiliation as it's required in your desired output
+    // Adding byline-affiliation as it's required in your desired output.
     $output['byline-affiliation'] = $node->get('field_az_byline')[0]->value ?? "\n";
     $output['body'] = $node->get('field_az_body')->value ?? "\n";
 
@@ -192,7 +193,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     try {
       $date = new \DateTime($dateString);
       return $date->format('Y-m-d\TH:i:sP');
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       return "Error formatting date: " . $e->getMessage();
     }
   }
