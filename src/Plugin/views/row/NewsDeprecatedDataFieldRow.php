@@ -221,15 +221,15 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
   /**
    * Gets the image data.
    *
-   * @param int|null $value
-   *   The image ID, or null if no image is present.
+   * @param int $value
+   *   The image ID.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
    *
    * @return array|\Drupal\az_news_export\AZNewsDataEmpty
    *   The image data or an empty data object.
    */
-  protected function getImageData(?int $value, $entity) {
+  protected function getImageData(int $value, $entity) {
     $item = [];
     if (!empty($value)) {
       $media = $this->entityTypeManager->getStorage('media')->load($value);
