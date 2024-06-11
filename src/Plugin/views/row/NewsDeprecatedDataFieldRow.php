@@ -151,6 +151,9 @@ protected function getNodeData($story) {
       'alt' => $imgData['alt'],
     ];
   }
+  else {
+     $output['img-fid'] = 3974;
+  }
 
   $output['url-canonical'] = $story->toUrl()->setOption('absolute', TRUE)->toString();
   $output['date-of-publication'] = $this->formatDateOfPublication($story->get('field_az_published')[0]->value);
@@ -199,7 +202,7 @@ protected function getTermsAsString($terms) {
             $item['original'] = $image->createFileUrl(FALSE);
             $uri = $image->getFileUri();
             $styles = [
-              'thumbnail' => 'az_enterprise_thumbnail',
+              'thumbnail' => 'az_card_image',
               'thumbnail_small' => 'az_enterprise_thumbnail_small',
             ];
             foreach ($styles as $key => $style_id) {
