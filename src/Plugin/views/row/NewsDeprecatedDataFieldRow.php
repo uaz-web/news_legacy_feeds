@@ -150,6 +150,7 @@ protected function getNodeData($story) {
       'alt' => $imgData['alt'],
     ];
   }
+  // Use default image if none is set.
   else {
     $output['img-fid'] = 3974;
   }
