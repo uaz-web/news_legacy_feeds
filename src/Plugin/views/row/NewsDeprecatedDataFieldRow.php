@@ -15,9 +15,9 @@ use Drupal\Core\Utility\Token;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Plugin which displays fields as raw data, this plugin is only necessary in
- * order to change the shape of the data outputted by Drupal. Specifically, this
- * plugin is used to put each row of data into an array with a key of 'term' and
+ * Plugin which displays fields as raw data.
+ *
+ * This plugin is used to put each row of data into an array with a key of 'term' and
  * wrap that whole thing in a key of terms.
  *
  * @ingroup views_row_plugins
@@ -200,13 +200,13 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
   /**
    * Converts terms to a comma-separated string.
    *
-   * @param array $terms
-   *   The terms.
+   * @param \Drupal\taxonomy\Entity\Term[] $terms
+   *   An array of term entities.
    *
    * @return string
    *   The comma-separated terms.
    */
-  protected function getTermsAsString($terms) {
+  protected function getTermsAsString(array $terms) {
     $termNames = [];
     foreach ($terms as $term) {
       $termNames[] = $term->getName();
@@ -225,7 +225,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    * @return array|\Drupal\az_news_export\AZNewsDataEmpty
    *   The image data or an empty data object.
    */
-  protected function getImageData($value, $entity) {
+  protected function getImageData(int $value, $entity) {
     $item = [];
     if (!empty($value)) {
       $media = $this->entityTypeManager->getStorage('media')->load($value);
