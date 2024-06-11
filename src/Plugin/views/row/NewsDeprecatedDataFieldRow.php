@@ -132,8 +132,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The node data.
    */
 protected function getNodeData($story) {
-  // Default image id to a placeholder image
-  $image_id = $story->get('field_az_media_thumbnail_image')[0]->target_id ?? 20558;
+  $image_id = $story->get('field_az_media_thumbnail_image')[0]->target_id;
   $imgData = $this->getImageData($image_id, $story);
   $output = [
     'uuid' => $story->uuid(),
@@ -152,7 +151,8 @@ protected function getNodeData($story) {
     ];
   }
   else {
-     $output['img-fid'] = 3974;
+    // Default image id to a placeholder image
+    $output['img-fid'] = 3974;
   }
 
   $output['url-canonical'] = $story->toUrl()->setOption('absolute', TRUE)->toString();
