@@ -150,6 +150,9 @@ protected function getNodeData($story) {
       'alt' => $imgData['alt'],
     ];
   }
+  else {
+    $output['img-fid'] = 3974;
+  }
 
   $output['url-canonical'] = $story->toUrl()->setOption('absolute', TRUE)->toString();
   $output['date-of-publication'] = $this->formatDateOfPublication($story->get('field_az_published')[0]->value);
