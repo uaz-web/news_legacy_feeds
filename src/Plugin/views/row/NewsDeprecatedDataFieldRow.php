@@ -154,7 +154,6 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The node data.
    */
   protected function getNodeData(Node $node) {
-
     // Get the default media id from configuration.
     $default_media_id = $this->configFactory('news_legacy_feeds.settings')->get('default_media_id') ?? 184304;
     $media_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? $default_media_id;
