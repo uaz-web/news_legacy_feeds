@@ -141,35 +141,25 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The node data.
    */
   protected function getNodeData(Node $node) {
-    $image_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? NULL;
-    if ($image_id !== NULL) {
-      // Cast $image_id to an integer.
-      $image_id = (int) $image_id;
-      $imgData = $this->getImageData($image_id, $node);
-    }
-    else {
-      $imgData = new AZNewsDataEmpty();
-    }
+    // Fallback to default placeholder image file ID if no image exists.
+    $image_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? 3974;
+    // Cast $image_id to an integer.
+    $image_id = (int) $image_id;
+    $imgData = $this->getImageData($image_id, $node);
     $output = [
       'uuid' => $node->uuid(),
       'title' => $node->label(),
     ];
 
-    if (!($imgData instanceof AZNewsDataEmpty)) {
-      $output['img-fid'] = $imgData['fid'];
-      $output['img-large'] = [
-        'src' => $imgData['original'],
-        'alt' => $imgData['alt'],
-      ];
-      $output['img-thumb'] = [
-        'src' => $imgData['thumbnail'],
-        'alt' => $imgData['alt'],
-      ];
-    }
-    else {
-      // Default image id to a placeholder image.
-      $output['img-fid'] = 3974;
-    }
+    $output['img-fid'] = $imgData['fid'];
+    $output['img-large'] = [
+      'src' => $imgData['original'],
+      'alt' => $imgData['alt'],
+    ];
+    $output['img-thumb'] = [
+      'src' => $imgData['thumbnail'],
+      'alt' => $imgData['alt'],
+    ];
 
     $output['url-canonical'] = $node->toUrl()->setOption('absolute', TRUE)->toString();
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
