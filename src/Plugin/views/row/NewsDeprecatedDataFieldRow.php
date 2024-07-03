@@ -176,6 +176,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
 
     // Convert terms to a comma-separated string.
     $terms = $node->get('field_az_news_tags')->referencedEntities();
+    $terms += $node->get('field_custom_news_categories')->referencedEntities();
+    $terms += $node->get('field_az_enterprise_attributes')->referencedEntities();
     $output['terms'] = $this->getTermsAsString($terms);
 
     $output['summary-med'] = $node->get('field_az_summary')[0]->value ?? "\n";
