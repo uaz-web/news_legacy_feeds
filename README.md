@@ -2,6 +2,11 @@
 
 This repo provides legacy news feeds.
 
+# Configuration
+Example of setting a default media id.
+```
+terminus drush ua-news-redesign.feedtermfix -- config:set news_legacy_feeds.settings default_media_id 183965
+```
 
 ## Developing with Lando
 
@@ -21,7 +26,6 @@ lando phpcbf
 
 lando phpstan
 ```
-
 
 See
 
