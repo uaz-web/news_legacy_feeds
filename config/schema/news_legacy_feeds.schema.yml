@@ -1,0 +1,7 @@
+news_legacy_feeds.settings:
+  type: config_object
+  label: 'Legacy News Feed settings'
+  mapping:
+    default_media_id:
+      type: integer
+      label: 'Default Media ID'
