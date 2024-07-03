@@ -13,6 +13,7 @@ use Drupal\rest\Plugin\views\row\DataFieldRow;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 
 /**
  * Plugin which displays fields as raw data.
@@ -53,6 +54,13 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
   protected $token;
 
   /**
+   * The config factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -62,7 +70,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
       $plugin_definition,
       $container->get('serializer'),
       $container->get('entity_type.manager'),
-      $container->get('token')
+      $container->get('token'),
+      $container->get('config.factory')
     );
   }
 
@@ -81,6 +90,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The entity type manager service.
    * @param \Drupal\Core\Utility\Token $token
    *   The token service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory service.
    */
   public function __construct(
     array $configuration,
@@ -88,12 +99,14 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     $plugin_definition,
     SerializerInterface $serializer,
     EntityTypeManagerInterface $entity_type_manager,
-    Token $token
+    Token $token,
+    ConfigFactoryInterface $config_factory
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->serializer = $serializer;
     $this->entityTypeManager = $entity_type_manager;
     $this->token = $token;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -141,11 +154,12 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    *   The node data.
    */
   protected function getNodeData(Node $node) {
-    // Fallback to default placeholder image file ID if no image exists.
-    $image_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? 3974;
+    // Get the default media id from configuration.
+    $default_media_id = $this->configFactory('news_legacy_feeds.settings')->get('default_media_id') ?? 184304;
+    $media_id = $node->get('field_az_media_thumbnail_image')[0]->target_id ?? $default_media_id;
     // Cast $image_id to an integer.
-    $image_id = (int) $image_id;
-    $imgData = $this->getImageData($image_id, $node);
+    $media_id = (int) $media_id;
+    $imgData = $this->getImageData($media_id, $node);
     $output = [
       'uuid' => $node->uuid(),
       'title' => $node->label(),
