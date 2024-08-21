@@ -179,11 +179,12 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
 
     // Convert terms to a comma-separated string.
-    $terms = $node->get('field_az_news_tags')->referencedEntities();
-    $terms += $node->get('field_custom_news_categories')->referencedEntities();
-    $terms += $node->get('field_az_enterprise_attributes')->referencedEntities();
+    $terms = array_merge(
+      $node->get('field_az_news_tags')->referencedEntities(),
+      $node->get('field_custom_news_categories')->referencedEntities(),
+      $node->get('field_az_enterprise_attributes')->referencedEntities()
+    );
     $output['terms'] = $this->getTermsAsString($terms);
-
     $output['summary-med'] = $node->get('field_az_summary')[0]->value ?? "\n";
     $output['byline'] = $node->get('field_az_byline')[0]->value ?? "\n";
     // Adding byline-affiliation as it's required in your desired output.
