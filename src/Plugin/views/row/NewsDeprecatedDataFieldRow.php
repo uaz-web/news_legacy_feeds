@@ -168,7 +168,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     $output['img-fid'] = $imgData['fid'];
     $output['img-large'] = [
       'src' => $imgData['original'],
-      'alt' => $alt ,
+      'alt' => $alt,
     ];
     $output['img-thumb'] = [
       'src' => $imgData['thumbnail'],
