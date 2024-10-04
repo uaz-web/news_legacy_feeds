@@ -164,17 +164,16 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
       'uuid' => $node->uuid(),
       'title' => $node->label(),
     ];
-
+    $alt = $imgData['alt'] ?? '';
     $output['img-fid'] = $imgData['fid'];
     $output['img-large'] = [
       'src' => $imgData['original'],
-      'alt' => $imgData['alt'],
+      'alt' => $alt ,
     ];
     $output['img-thumb'] = [
       'src' => $imgData['thumbnail'],
-      'alt' => $imgData['alt'],
+      'alt' => $alt ,
     ];
-
     $output['url-canonical'] = $node->toUrl()->setOption('absolute', TRUE)->toString();
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
 
