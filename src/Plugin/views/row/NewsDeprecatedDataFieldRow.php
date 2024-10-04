@@ -172,7 +172,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     ];
     $output['img-thumb'] = [
       'src' => $imgData['thumbnail'],
-      'alt' => $alt ,
+      'alt' => $alt,
     ];
     $output['url-canonical'] = $node->toUrl()->setOption('absolute', TRUE)->toString();
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
