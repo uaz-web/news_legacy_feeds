@@ -79,6 +79,8 @@ class LegacyCategoriesController extends ControllerBase {
       'uanews_tags' => 'az_news_tags',
       'uanews_categories' => 'news_story_categories',
       'event_categories' => 'az_event_categories',
+      'employee_news_categories' => 'employee_news_categories',
+      'employee_news_tags' => 'employee_news_tags',
     ];
 
     if ($vocabulariesParam === 'all') {
