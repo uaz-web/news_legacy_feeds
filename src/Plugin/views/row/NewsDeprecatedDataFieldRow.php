@@ -180,6 +180,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
     $terms = array_merge(
       $node->get('field_az_news_tags')->referencedEntities(),
       $node->get('field_custom_news_categories')->referencedEntities(),
+      $node->get('field_custom_employee_news_cat')->referencedEntities(),
+      $node->get('field_custom_employee_news_tags')->referencedEntities(),
       $node->get('field_az_enterprise_attributes')->referencedEntities()
     );
     $output['terms'] = $this->getTermsAsString($terms);
