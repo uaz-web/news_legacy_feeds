@@ -34,31 +34,23 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
 
   /**
    * The serializer service.
-   *
-   * @var \Symfony\Component\Serializer\SerializerInterface
    */
-  protected $serializer;
+  protected SerializerInterface $serializer;
 
   /**
    * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityTypeManager;
+  protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
    * The token service.
-   *
-   * @var \Drupal\Core\Utility\Token
    */
-  protected $token;
+  protected Token $token;
 
   /**
    * The config factory service.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  protected $configFactory;
+  protected ConfigFactoryInterface $configFactory;
 
   /**
    * {@inheritdoc}
