@@ -243,7 +243,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    * @param int $image_id
    *   The image ID.
    * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity (unused but retained for potential future needs).
+   *   The entity.
    *
    * @return array|\Drupal\az_news_export\AZNewsDataEmpty
    *   Array with keys: fid, uuid, original, thumbnail, thumbnail_small, alt
