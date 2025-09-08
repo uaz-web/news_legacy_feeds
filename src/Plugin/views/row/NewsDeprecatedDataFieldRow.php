@@ -238,7 +238,7 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
    * Gets the image data.
    *
    * Returns an array of image data when available; otherwise a
-   * AZNewsDataEmpty instance (legacy behavior required by caller semantics).
+   * AZNewsDataEmpty instance.
    *
    * @param int $image_id
    *   The image ID.
