@@ -3,6 +3,6 @@
   "description": "Custom module for News Legacy Feeds",
   "type": "drupal-custom-module",
   "require": {
-      "drupal/core": "^10"
+      "drupal/core": "^10 || ^11"
   }
 }
