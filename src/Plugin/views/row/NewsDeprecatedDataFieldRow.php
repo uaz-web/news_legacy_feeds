@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Drupal\news_legacy_feeds\Plugin\views\row;
 
-use Drupal\az_news_export\AZNewsDataEmpty;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Utility\Token;
 use Drupal\image\Entity\ImageStyle;
@@ -14,6 +13,7 @@ use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\az_news_export\AZNewsDataEmpty;
 
 /**
  * Plugin which displays fields as raw data.
@@ -156,14 +156,26 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
       'uuid' => $node->uuid(),
       'title' => $node->label(),
     ];
-    $output['img-fid'] = $imgData['fid'];
+    if ($imgData instanceof AZNewsDataEmpty) {
+      $fid = 0;
+      $original = '';
+      $thumb = '';
+      $alt = '';
+    }
+    else {
+      $fid = $imgData['fid'] ?? 0;
+      $original = $imgData['original'] ?? '';
+      $thumb = $imgData['thumbnail'] ?? '';
+      $alt = $imgData['alt'] ?? '';
+    }
+    $output['img-fid'] = $fid;
     $output['img-large'] = [
-      'src' => $imgData['original'],
-      'alt' => $imgData['alt'] ?? '',
+      'src' => $original,
+      'alt' => $alt,
     ];
     $output['img-thumb'] = [
-      'src' => $imgData['thumbnail'],
-      'alt' => $imgData['alt'] ?? '',
+      'src' => $thumb,
+      'alt' => $alt,
     ];
     $output['url-canonical'] = $node->toUrl()->setOption('absolute', TRUE)->toString();
     $output['date-of-publication'] = $this->formatDateOfPublication($node->get('field_az_published')[0]->value);
@@ -225,13 +237,17 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
   /**
    * Gets the image data.
    *
+   * Returns an array of image data when available; otherwise a
+   * AZNewsDataEmpty instance.
+   *
    * @param int $image_id
    *   The image ID.
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
    *
    * @return array|\Drupal\az_news_export\AZNewsDataEmpty
-   *   The image data or an empty data object.
+   *   Array with keys: fid, uuid, original, thumbnail, thumbnail_small, alt
+   *   or an AZNewsDataEmpty object if no data.
    */
   protected function getImageData(int $image_id, $entity) {
     $item = [];
@@ -261,9 +277,8 @@ class NewsDeprecatedDataFieldRow extends DataFieldRow {
         }
       }
     }
-    // Avoid returning an empty array.
     if (empty($item)) {
-      $item = new AZNewsDataEmpty();
+      return new AZNewsDataEmpty();
     }
     return $item;
   }
