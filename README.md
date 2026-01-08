@@ -1,5 +1,6 @@
 #  News Legacy Feeds
 
+# The canonical version of this repository is now uaz-web/news_legacy_feeds (https://github.com/uaz-web/news_legacy_feeds)
 This repo provides legacy news feeds.
 
 # Configuration
